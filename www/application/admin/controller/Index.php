@@ -5,14 +5,14 @@ class Index extends common
 {
     public function index()
     {
-       return $this->fetch();
+       print_r($_POST);
     }
 
     /**
      * 登录
      */
     public function login(){
-
-        return $this->fetch('login');
+        $this->view->engine->layout(false);//不加载layout
+        return view();
     }
 }
