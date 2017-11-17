@@ -15,4 +15,10 @@ class Index extends common
         $this->view->engine->layout(false);//不加载layout
         return view();
     }
+
+    /**
+     * 登录提交
+     */
+    public function login_action(){
+    }
 }
