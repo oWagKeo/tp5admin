@@ -3,22 +3,13 @@ namespace app\admin\controller;
 
 class Index extends common
 {
+
+    /**
+     * 后台首页
+     */
     public function index()
     {
-       print_r($_POST);
+        return $this->fetch();
     }
 
-    /**
-     * 登录
-     */
-    public function login(){
-        $this->view->engine->layout(false);//不加载layout
-        return view();
-    }
-
-    /**
-     * 登录提交
-     */
-    public function login_action(){
-    }
 }
