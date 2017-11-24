@@ -38,6 +38,19 @@ class Administration extends AdminController{
             if( $_POST['data']['pass'] != $_POST['data']['repass']){
                 exit(json_decode(['msg'=>'密码不一致！','state'=>0]));
             }
+            $pwd = password($_POST['data']['pass']);
+            $data = array(
+                'username'  => $_POST['data']['username'],
+                'phone'  => $_POST['data']['phone'],
+                'email'  => $_POST['data']['email'],
+                'username'  => $_POST['data']['username'],
+                'real_name'  => $_POST['data']['real_name'],
+                'password'  => $pwd['password'],
+                'encrypt'  => $pwd['encrypt'],
+                'add_time'  => time(),
+                'update_time'  => time()
+            );
+            $re = db('admin')->insert($data);
 
         }else{
             return $this->fetch();
