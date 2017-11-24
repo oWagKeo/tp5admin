@@ -117,7 +117,7 @@ $(function () {
                     return;
                 }
             };
-            
+
             tab.tabAdd(title,url,index+1);
             tab.tabChange(index+1);
         }
@@ -137,7 +137,7 @@ $(function () {
     w       弹出层宽度（缺省调默认值）
     h       弹出层高度（缺省调默认值）
 */
-function x_admin_show(title,url,w,h){
+function alert_show(title,url,w,h){
     if (title == null || title == '') {
         title=false;
     };
