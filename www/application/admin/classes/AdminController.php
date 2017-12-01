@@ -29,9 +29,9 @@ class AdminController extends Controller{
                 'icon'=>'&#xe726',
                 'sub_menue'=>[
                     'admin_list' => ['name'=>'管理员列表','controller'=>'Administration','fun'=>'admin_list'],
-                    'admin_add'  => ['name'=>'添加管理员','controller'=>'Administration','fun'=>'admin_add'],
-                    'pre_class'  => ['name'=>'权限分类','controller'=>'Administration','fun'=>'pre_class'],
-                    'admin_pre'  => ['name'=>'权限管理','controller'=>'Administration','fun'=>'admin_pre'],
+//                    'admin_add'  => ['name'=>'添加管理员','controller'=>'Administration','fun'=>'admin_add'],
+//                    'pre_class'  => ['name'=>'权限分类','controller'=>'Administration','fun'=>'pre_class'],
+//                    'admin_pre'  => ['name'=>'权限管理','controller'=>'Administration','fun'=>'admin_pre'],
                 ]
             ],
             'user'=>[
