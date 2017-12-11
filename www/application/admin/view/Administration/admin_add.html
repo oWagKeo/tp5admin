@@ -5,7 +5,7 @@
                 <span class="x-red">*</span>登录名
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="username" name="username"  lay-verify="required"
+                <input type="text" id="username" name="username"  lay-verify="username"
                        autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">
@@ -90,7 +90,12 @@
         var layer = layui.layer;
         //自定义验证规则
         form.verify({
-            pass: [/(.+){6,12}$/, '密码必须6到12位']
+            username: function(value){
+                if(value.length < 3){
+                    return '昵称至少得3个字符啊';
+                }
+            }
+            ,pass: [/(.+){6,12}$/, '密码必须6到12位']
             ,repass: function(value){
                 if($('#L_pass').val()!=$('#L_repass').val()){
                     return '两次密码不一致';
@@ -106,13 +111,18 @@
                 type: 'post',
                 dataType: 'json',
                 data:{ data },
-                success:function(){
-                    layer.alert("增加成功", {icon: 6},function () {
-                        // 获得frame索引
-                        var index = parent.layer.getFrameIndex(window.name);
-                        //关闭当前frame
-                        parent.layer.close(index);
-                    });
+                success:function( result ){
+                    if( result.state ){
+                        layer.alert(result.msg, {icon: 6},function () {
+                            // 获得frame索引
+                            var index = parent.layer.getFrameIndex(window.name);
+                            //关闭当前frame
+                            parent.layer.close(index);
+                        });
+                    }else{
+                        layer.alert(result.msg,{icon:5});
+                    }
+
                 }
             });
             return false;

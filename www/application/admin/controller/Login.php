@@ -35,11 +35,11 @@ class Login extends Controller{
             }
             $user = db('admin')->field('username,password,userid,encrypt')->where(['username'=>$_POST['username'],'status'=>1])->find();
             if( !$user ){
-                $this->error('用户名或者密码错误！');
+                $this->error('用户名错误！或者帐号被停用');
             }
             $pas = password($_POST['password'],$user['encrypt']);
             if( $pas != $user['password'] ){
-                $this->error('用户名或者密码错误！');
+                $this->error('密码错误！');
             }
             db('admin_login')->insert(['uid'=>$user['userid'],'time'=>time(),'ip'=>get_client_ip()]);
             session('userinfo',array('username'=>$user['username'],'userid'=>$user['userid']));

@@ -9,6 +9,7 @@ class Index extends AdminController
      * 后台首页
      */
     public function index(){
+        $this->assign('userinfo',session('userinfo'));
         $this->assign('menue_list',$this->menue_list());
         return $this->fetch();
     }

@@ -38,80 +38,93 @@
             <th>操作</th>
         </thead>
         <tbody>
-        <tr>
-            <td>
-                <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
-            </td>
-            <td>1</td>
-            <td>admin</td>
-            <td>18925139194</td>
-            <td>113664000@qq.com</td>
-            <td>超级管理员</td>
-            <td>2017-01-01 11:11:42</td>
-            <td class="td-status">
-                <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span></td>
-            <td class="td-manage">
-                <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
-                    <i class="layui-icon">&#xe601;</i>
-                </a>
-                <a title="编辑"  onclick="x_admin_show('编辑','admin-edit.html')" href="javascript:;">
-                    <i class="layui-icon">&#xe642;</i>
-                </a>
-                <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                    <i class="layui-icon">&#xe640;</i>
-                </a>
-            </td>
-        </tr>
+        {foreach $list as $lt}
+            <tr>
+                <td>
+                    <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{$lt.userid}'><i class="layui-icon">&#xe605;</i></div>
+                </td>
+                <td>{$lt.userid}</td>
+                <td>{$lt.username}</td>
+                <td>{$lt.phone}</td>
+                <td>{$lt.email}</td>
+                <td>超级管理员</td>
+                <td>{$lt.add_time|date="y-m-d",###}</td>
+                <td class="td-status">
+                    {eq name='$lt.status' value='1'}
+                    <span class="layui-btn layui-btn-normal layui-btn-mini ">已启用</span>
+                    {else/}
+                    <span class="layui-btn layui-btn-normal layui-btn-mini layui-btn-disabled">已停用</span>
+                    {/eq}
+                </td>
+                <td class="td-manage">
+                    {eq name='$lt.status' value='1'}
+                        <a onclick="admin_stop(this,'{$lt.userid}')" href="javascript:;"  title="停用">
+                            <i class="layui-icon">&#xe601;</i>
+                        </a>
+                    {else/}
+                        <a onclick="admin_stop(this,'{$lt.userid}')" href="javascript:;"  title="启用">
+                            <i class="layui-icon">&#xe62f;</i>
+                        </a>
+                    {/eq}
+                    <a title="编辑"  onclick="alert_show('编辑','admin-edit.html')" href="javascript:;">
+                        <i class="layui-icon">&#xe642;</i>
+                    </a>
+                    <a title="删除" onclick="admin_del(this,'{$lt.userid}')" href="javascript:;">
+                        <i class="layui-icon">&#xe640;</i>
+                    </a>
+                </td>
+            </tr>
+        {/foreach}
         </tbody>
     </table>
     <div class="page">
         <div>
-            <a class="prev" href="">&lt;&lt;</a>
-            <a class="num" href="">1</a>
-            <span class="current">2</span>
-            <a class="num" href="">3</a>
-            <a class="num" href="">489</a>
-            <a class="next" href="">&gt;&gt;</a>
+            {$list->render()}
         </div>
     </div>
 </div>
 <script>
     layui.use('laydate', function(){
         var laydate = layui.laydate;
-        //执行一个laydate实例
         laydate.render({
             elem: '#start' //指定元素
         });
-        //执行一个laydate实例
         laydate.render({
             elem: '#end' //指定元素
         });
     });
     /*用户-停用*/
-    function member_stop(obj,id){
-        layer.confirm('确认要停用吗？',function(index){
-
-            if($(obj).attr('title')=='启用'){
-
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
-
-            }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
-            }
-
+    function admin_stop(obj,id){
+        layer.confirm('确认要更改吗？',function(index){
+            //发异步把用户状态进行更改
+            $.ajax({
+                async:false,
+                url:'/admin/administration/admin_stop',
+                type:'post',
+                dataType:'json',
+                data:{id:id},
+                success:function( resutl ){
+                    if( resutl.state ){
+                        if($(obj).attr('title')=='停用'){
+                            $(obj).attr('title','启用');
+                            $(obj).find('i').html('&#xe62f;');
+                            $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                            layer.msg('已停用!',{icon: 6,time:1000});
+                        }else{
+                            $(obj).attr('title','停用');
+                            $(obj).find('i').html('&#xe601;');
+                            $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                            layer.msg('已启用!',{icon: 6,time:1000});
+                        }
+                    }else{
+                        layer.msg(resutl.msg,{icon: 5,time:1000});
+                    }
+                }
+            });
         });
     }
     /*用户-删除*/
-    function member_del(obj,id){
+    function admin_del(obj,id){
         layer.confirm('确认要删除吗？',function(index){
             //发异步删除数据
             $(obj).parents("tr").remove();
